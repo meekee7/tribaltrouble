@@ -18,7 +18,7 @@ public final strictfp class CopyDist {
 		SVNRepositoryFactoryImpl.setup();
 	}
 */
-	private final static void pruneDist(File dist, File svndist, SVNWCClient workspace) throws SVNException, IOException {
+	private final static void pruneDist(File dist, File svndist, SVNWCClient workspace) throws org.tmatesoft.svn.core.SVNException, IOException {
 		File[] svndist_files = svndist.listFiles(new FileFilter() {
 			public final boolean accept(File file) {
 				return !file.getName().equals(".svn");
@@ -36,7 +36,7 @@ public final strictfp class CopyDist {
 		}
 	}
 
-	private final static void copyDist(File dist, File svndist, SVNWCClient workspace) throws SVNException, IOException {
+	private final static void copyDist(File dist, File svndist, SVNWCClient workspace) throws org.tmatesoft.svn.core.SVNException, IOException {
 		File[] dist_files = dist.listFiles();
 		for (int i = 0; i < dist_files.length; i++) {
 			File dist_file = dist_files[i];
@@ -58,7 +58,7 @@ public final strictfp class CopyDist {
 		}
 	}
 
-	public final static void main(String[] args) throws SVNException, IOException {
+	public final static void main(String[] args) throws org.tmatesoft.svn.core.SVNException, IOException {
 		int arg_index = 0;
 		File dist_dir = new File(args[arg_index++]);
 		File svndist_dir = new File(args[arg_index++]);

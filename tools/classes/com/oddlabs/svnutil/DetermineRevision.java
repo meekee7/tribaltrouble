@@ -6,10 +6,10 @@ import org.tmatesoft.svn.core.io.*;
 
 import java.io.*;
 
-public final strictfp class DetermineRevision implements ISVNStatusHandler {
+public final strictfp class DetermineRevision implements org.tmatesoft.svn.core.wc.ISVNStatusHandler {
 	private long latest_revision = -1;
 	
-	public void handleStatus(SVNStatus status) {
+	public void handleStatus(org.tmatesoft.svn.core.wc.SVNStatus status) {
 		if (status.getContentsStatus() == SVNStatusType.STATUS_EXTERNAL)
 			return;
 		if (status.getContentsStatus() == SVNStatusType.STATUS_MODIFIED || status.getPropertiesStatus() == SVNStatusType.STATUS_MODIFIED)
@@ -18,7 +18,7 @@ public final strictfp class DetermineRevision implements ISVNStatusHandler {
 		latest_revision = Math.max(latest_revision, file_revision);
 	}
 	
-	private DetermineRevision(File workspace_location, File revision_file) throws SVNException, IOException {
+	private DetermineRevision(File workspace_location, File revision_file) throws org.tmatesoft.svn.core.SVNException, IOException {
 		SVNClientManager client_manager = SVNClientManager.newInstance();
 		SVNStatusClient workspace = client_manager.getStatusClient();
 		workspace.doStatus(workspace_location, true, false, true, false, this);
@@ -31,7 +31,7 @@ System.out.println("revision: " + latest_revision);
 		out.close();
 	}
 	
-	public static void main(String[] args) throws SVNException, IOException {
+	public static void main(String[] args) throws org.tmatesoft.svn.core.SVNException, IOException {
 		File workspace_location = new File(args[0]);
 		File revision_file = new File(args[1]);
 		new DetermineRevision(workspace_location, revision_file);
