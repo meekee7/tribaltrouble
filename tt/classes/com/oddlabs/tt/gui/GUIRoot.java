@@ -9,7 +9,7 @@ import java.util.Set;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.glu.GLU;
+//import org.lwjgl.opengl.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -515,13 +515,24 @@ System.out.println("GC Forced");
 		return current_gui_object;
 	}
 
+	public final void myGluPerspective(double fovy, double aspect, double zNear, double zFar){
+		//https://stackoverflow.com/questions/3058552/raw-opengl-equivillant-of-gluperspective
+		double ymax = zNear * Math.tan(fovy * Math.PI / 360.0);
+		double ymin = -ymax;
+		double xmin = ymin * aspect;
+		double xmax = ymax * aspect;
+
+		GL11.glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
+	}
+
 	public final void setupGUIView() {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0f);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GLU.gluPerspective(Globals.FOV, LocalInput.getViewAspect(), Globals.VIEW_MIN, Globals.VIEW_MAX);
+		myGluPerspective(Globals.FOV, LocalInput.getViewAspect(), Globals.VIEW_MIN, Globals.VIEW_MAX);
+		//GLU.gluPerspective(Globals.FOV, LocalInput.getViewAspect(), Globals.VIEW_MIN, Globals.VIEW_MAX);
 		GL11.glMultMatrix(matrix_buf);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
