@@ -1,2 +1,6 @@
 .svn
 build
+.idea
+out/
+*.iml
+/*.dll
